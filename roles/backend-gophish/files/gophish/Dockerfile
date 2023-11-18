@@ -36,11 +36,25 @@ ENV GOPHISHDIR=${GOPHISHDIR}
 ENV GOPHISHVERSION=${GOPHISHVERSION}
 ENV CONTACT_EMAIL=${CONTACT_EMAIL}
 
+# Create Some Temp Dirs 
 RUN mkdir -p ${GOPHISHDIR}/tmp 2>/dev/null
+# RUN mkdir ${GOPHISHDIR}/controllers 2>/dev/null
+# RUN mkdir ${GOPHISHDIR}/templates 2>/dev/null
+
+# These have some adjustments to make more stealh
+COPY files/phish.go /tmp/phish.go
+COPY files/404.html /tmp/404.html
 
 # Run the installation shell script
 COPY files/gophish_goget.sh /tmp/goget.sh
 RUN /bin/sh /tmp/goget.sh $GOPHISHVERSION $GOPHISHDIR
+
+# Adds stealth to gophish code 
+ENV PATH="${PATH}:/usr/local/go/bin"
+WORKDIR /opt/gophish
+RUN go get -v && go build -v
+WORKDIR / 
+RUN echo "go should be done, party time, excellent"
 
 # Fix bugs with rsyslog and Docker
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
@@ -55,6 +69,7 @@ COPY $VPN /root/$VPN
 # Create a GoPhish service
 # COPY files/gophish.service /etc/init.d/gophish
 # RUN chmod +x /etc/init.d/gophish
+
 
 # Set-up the GoPhish config
 COPY files/gophish-config.json $GOPHISHDIR/config.json

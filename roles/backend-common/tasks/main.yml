@@ -2,8 +2,8 @@
 - name: "***** BACKEND: Preparing the operating system *****"
   include_tasks: os-prep.yml
 
-- name: "***** BACKEND: Harden the server *****"
-  include_tasks: backend-hardening.yml
+# - name: "***** BACKEND: Harden the server *****"
+#   include_tasks: backend-hardening.yml
 
 - name: "***** BACKEND: Set up toolkit *****"
   include_tasks: toolkit.yml

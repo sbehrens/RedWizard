@@ -11,8 +11,8 @@
 - name: "***** RELAY: OpenVPN setup *****"
   include_tasks: ovpn-setup.yml
 
-- name: "***** RELAY: Harden the server *****"
-  include_tasks: relay-hardening.yml
+# - name: "***** RELAY: Harden the server *****"
+#   include_tasks: relay-hardening.yml
 
 - name: "***** BACKEND: Set up toolkit *****"
   include_tasks: toolkit.yml
